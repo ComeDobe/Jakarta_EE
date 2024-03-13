@@ -17,7 +17,7 @@ public class Epreuve {
     private String type_epreuve;
     private int id_tournoi;
 
-    public Epreuve(Integer id, int annee, String type_epreuve, int id_tournoi) {
+    public Epreuve(Integer id, int annee, String type_epreuve) {
         this.id = id;
         this.annee = annee;
         this.type_epreuve = type_epreuve;
@@ -38,5 +38,9 @@ public class Epreuve {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getAnnee(), getType_epreuve(), getId_tournoi());
+    }
+
+    public String getTypeEpreuve() {
+        return type_epreuve;
     }
 }
