@@ -1,6 +1,7 @@
 package com.example.revisontennis.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
 @Setter
 public class Epreuve {
 
+    @Id
     private Integer id;
     private int annee;
     private String type_epreuve;
