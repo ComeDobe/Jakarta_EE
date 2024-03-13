@@ -1,4 +1,4 @@
-package com.example.revisontennis.servlet;
+package com.example.revisontennis.controller;
 
 import com.example.revisontennis.dao.TournoiDAO;
 import com.example.revisontennis.model.Tournoi;
