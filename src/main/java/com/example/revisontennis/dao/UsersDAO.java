@@ -37,7 +37,6 @@ public class UsersDAO {
         return users;
     }
 
-
     public static List<Users> rechercherUsers(Integer id, String username, String password, String email, String profil) {
         List<Users> users = new ArrayList<>();
         try {
