@@ -12,7 +12,7 @@ public JoueurDAO() {
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tennis?useSSL=false&serverTimezone=UTC", "root", "root");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tennis?useSSL=false&serverTimezone=UTC", "root", "");
     } catch (SQLException | ClassNotFoundException e) {
         e.printStackTrace();
     }

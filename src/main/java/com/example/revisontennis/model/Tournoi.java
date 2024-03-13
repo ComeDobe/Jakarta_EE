@@ -17,7 +17,7 @@ public class Tournoi {
     private String nom;
     private String code;
 
-    public Tournoi(Integer id, String nom, String code) {
+    public Tournoi(String nom, String code) {
         this.id = id;
         this.nom = nom;
         this.code = code;

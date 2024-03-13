@@ -10,8 +10,7 @@ public class MatchDAO {
 
     public MatchDAO() {
         try {
-            this.connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tennis?useSSL=false&serverTimezone=UTC", "root", "root");
+            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tennis?useSSL=false&serverTimezone=UTC", "root", "");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
