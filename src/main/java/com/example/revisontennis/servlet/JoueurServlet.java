@@ -16,6 +16,7 @@ import java.sql.SQLException;
 public class JoueurServlet extends HttpServlet {
 
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         String query = request.getParameter("query");
@@ -29,6 +30,7 @@ public class JoueurServlet extends HttpServlet {
             request.getRequestDispatcher("joueur.jsp").forward(request, response);
         }
     }
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         String nom = request.getParameter("nom");
@@ -54,7 +56,7 @@ public class JoueurServlet extends HttpServlet {
         response.sendRedirect("joueur.jsp");
     }
 
-
+    @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer id = Integer.parseInt(request.getParameter("id"));
         JoueurDAO joueurDAO = new JoueurDAO();
@@ -62,6 +64,7 @@ public class JoueurServlet extends HttpServlet {
         response.sendRedirect("joueur.jsp");
     }
 
+    @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");

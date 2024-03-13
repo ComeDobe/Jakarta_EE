@@ -21,7 +21,7 @@ public class MatchServlet extends HttpServlet {
     private MatchDAO matchDAO;
     private JoueurDAO joueurDAO;
 
-    @Override
+
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         MatchDAO matchDAO = new MatchDAO();
@@ -42,7 +42,7 @@ public class MatchServlet extends HttpServlet {
             Integer id = Integer.parseInt(req.getParameter("id"));
             matchDAO.supprimerMatch(id);
         }
-        resp.sendRedirect("index.jsp");
+        resp.sendRedirect("match.jsp");
     }
 
     @Override
@@ -56,13 +56,28 @@ public class MatchServlet extends HttpServlet {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            req.getRequestDispatcher("match.jsp").forward(req, resp);
         } else if ("rechercher".equals(action)) {
             action = req.getParameter("action");
 
             req.setAttribute("matches", matchDAO.rechercherMatchs());
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            req.getRequestDispatcher("match.jsp").forward(req, resp);
         }
+    }
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        matchDAO.supprimerMatch(id);
+        response.sendRedirect("match.jsp");
+    }
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Integer id_vainqueur = Integer.parseInt(request.getParameter("id_vainqueur"));
+        Integer id_finaliste = Integer.parseInt(request.getParameter("id_finaliste"));
+        Match match = new Match(id, id_vainqueur, id_finaliste);
+        matchDAO.ajouterMatch(match);
+        response.sendRedirect("match.jsp");
     }
 
     protected void afficherListeMatchs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -84,6 +99,6 @@ public class MatchServlet extends HttpServlet {
 
         request.setAttribute("matchs", matchs);
         request.setAttribute("joueurs", joueurs);
-        request.getRequestDispatcher("Matchs.jsp").forward(request, response);
+        request.getRequestDispatcher("match.jsp").forward(request, response);
     }
 }
