@@ -5,7 +5,7 @@ import com.example.revisontennis.model.Joueur;
 import java.sql.*;
 
 public class JoueurDAO {
-private Object joueur;
+private Joueur joueur;
 private Connection connection;
 
 public JoueurDAO() {
@@ -84,5 +84,16 @@ public JoueurDAO() {
             e.printStackTrace();
         }
         return joueur;
+    }
+
+    public Joueur getJoueurById(int idVainqueur) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM joueur WHERE id = ?");
+            ps.setInt(1, idVainqueur);
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+    }
+        return null;
     }
 }
