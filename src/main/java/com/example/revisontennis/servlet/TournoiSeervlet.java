@@ -15,35 +15,43 @@ import java.sql.SQLException;
 public class TournoiSeervlet extends HttpServlet {
 
     private TournoiDAO tournoiDAO;
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nom = request.getParameter("nom");
         String code = request.getParameter("code");
-        TournoiDAO tournoiDAO = new TournoiDAO();
-        if ("ajouter".equals(action)) {
-            tournoiDAO.ajouterTournoi(new Tournoi(nom, code));
-        } else if ("editer".equals(action)) {
-            String idParam = request.getParameter("id");
-            int id = (idParam != null && !idParam.isEmpty()) ? Integer.parseInt(idParam) : 0;
-            Tournoi tournoi = new Tournoi(nom, code);
-            tournoiDAO.editerTournoi(tournoi);
-        } else if ("supprimer".equals(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            tournoiDAO.supprimerTournoi(id);
-        }
-        response.sendRedirect("index.jsp");
+        Tournoi tournoi = new Tournoi(nom, code);
+        tournoiDAO.ajouterTournoi(tournoi);
+        response.sendRedirect("tournois.jsp");
     }
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         String query = request.getParameter("query");
-        TournoiDAO tournoiDAO = new TournoiDAO();
         if (action == null || action.isEmpty() || "liste".equals(action)) {
             request.setAttribute("tournois", tournoiDAO.getTournoi());
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("tournois.jsp").forward(request, response);
         } else if ("rechercher".equals(action)) {
             request.setAttribute("tournois", tournoiDAO.rechercherTournois(query));
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("tournois.jsp").forward(request, response);
         }
+    }
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        tournoiDAO.supprimerTournoi(id);
+        response.sendRedirect("tournois.jsp");
+    }
+    public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nom = request.getParameter("nom");
+        String code = request.getParameter("code");
+        Tournoi tournoi = new Tournoi(nom, code);
+        tournoiDAO.ajouterTournoi(tournoi);
+        response.sendRedirect("tournois.jsp");
+    }
+    public void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nom = request.getParameter("nom");
+        String code = request.getParameter("code");
+        Tournoi tournoi = new Tournoi(nom, code);
+        tournoiDAO.editerTournoi(tournoi);
+        response.sendRedirect("tournois.jsp");
     }
 }
