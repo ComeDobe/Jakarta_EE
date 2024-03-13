@@ -17,7 +17,7 @@ public class Joueur {
     private String prenom;
     private String sexe;
 
-    public Joueur(Integer id, String nom, String prenom, String sexe) {
+    public Joueur( String nom, String prenom, String sexe) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
