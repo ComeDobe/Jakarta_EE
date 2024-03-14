@@ -1,4 +1,4 @@
-package com.example.revisontennis.model;
+package com.example.revisiontennis.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

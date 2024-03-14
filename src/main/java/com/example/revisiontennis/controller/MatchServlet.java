@@ -1,9 +1,9 @@
-package com.example.revisontennis.controller;
+package com.example.revisiontennis.controller;
 
-import com.example.revisontennis.dao.JoueurDAO;
-import com.example.revisontennis.dao.MatchDAO;
-import com.example.revisontennis.model.Joueur;
-import com.example.revisontennis.model.Match;
+import com.example.revisiontennis.dao.JoueurDAO;
+import com.example.revisiontennis.dao.MatchDAO;
+import com.example.revisiontennis.model.Joueur;
+import com.example.revisiontennis.model.Match;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

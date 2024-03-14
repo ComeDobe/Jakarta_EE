@@ -1,6 +1,6 @@
-package com.example.revisontennis.dao;
+package com.example.revisiontennis.dao;
 
-import com.example.revisontennis.model.Tournoi;
+import com.example.revisiontennis.model.Tournoi;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

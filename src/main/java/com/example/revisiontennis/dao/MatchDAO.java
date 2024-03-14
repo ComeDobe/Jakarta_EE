@@ -1,6 +1,6 @@
-package com.example.revisontennis.dao;
+package com.example.revisiontennis.dao;
 
-import com.example.revisontennis.model.Match;
+import com.example.revisiontennis.model.Match;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
