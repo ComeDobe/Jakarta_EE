@@ -52,7 +52,6 @@ public class UsersServlet extends HttpServlet {
         }
         response.sendRedirect("users.jsp");
     }
-
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer id = Integer.parseInt(request.getParameter("id"));
         UsersDAO usersDAO = new UsersDAO();
