@@ -2,16 +2,15 @@ package com.example.revisontennis.controller;
 
 import com.example.revisontennis.dao.EpreuveDAO;
 import com.example.revisontennis.model.Epreuve;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-@WebServlet("/EpreuveServlet")
+@WebServlet(name = "EpreuveServlet", value = "/EpreuveServlet")
 public class EpreuveServlet extends HttpServlet {
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -78,4 +77,5 @@ public class EpreuveServlet extends HttpServlet {
         epreuveDAO.editerEpreuve(epreuve);
         resp.sendRedirect("epreuve.jsp");
     }
+
 }

@@ -2,16 +2,15 @@ package com.example.revisontennis.controller;
 
 import com.example.revisontennis.dao.TournoiDAO;
 import com.example.revisontennis.model.Tournoi;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-@WebServlet("/TournoiServlet")
+@WebServlet(name = "TournoiServlet", value = "/TournoiServlet")
 public class TournoiServlet extends HttpServlet {
+
 
     private TournoiDAO tournoiDAO;
     @Override
@@ -56,4 +55,5 @@ public class TournoiServlet extends HttpServlet {
         tournoiDAO.editerTournoi(tournoi);
         response.sendRedirect("tournois.jsp");
     }
+
 }

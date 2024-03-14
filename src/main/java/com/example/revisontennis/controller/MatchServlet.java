@@ -4,11 +4,9 @@ import com.example.revisontennis.dao.JoueurDAO;
 import com.example.revisontennis.dao.MatchDAO;
 import com.example.revisontennis.model.Joueur;
 import com.example.revisontennis.model.Match;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/MatchServlet")
+@WebServlet(name = "MatchServlet", value = "/MatchServlet")
 public class MatchServlet extends HttpServlet {
     private MatchDAO matchDAO;
     private JoueurDAO joueurDAO;

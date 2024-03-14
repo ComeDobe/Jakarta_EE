@@ -1,16 +1,14 @@
 package com.example.revisontennis.controller;
 
 import com.example.revisontennis.dao.UsersDAO;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
-@WebServlet("/UsersServlet")
+@WebServlet(name = "UsersServlet", value = "/UsersServlet")
 public class UsersServlet extends HttpServlet {
     private UsersDAO usersDAO;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
