@@ -9,7 +9,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "JoueurServlet", value = "/JoueurServlet")
+@WebServlet("/JoueurServlet")
 public class JoueurServlet extends HttpServlet {
 
     @Override
