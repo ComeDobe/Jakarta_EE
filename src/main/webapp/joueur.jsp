@@ -14,7 +14,6 @@
 <body>
 <div class="container">
     <h1 class="my-3">Liste des joueurs</h1>
-
     <form action="JoueurServlet" method="get" class="search-form">
         <input type="hidden" name="action" value="rechercher">
         <div class="form-group">
@@ -29,7 +28,6 @@
         </div>
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Rechercher</button>
     </form>
-
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="thead-dark">
@@ -52,7 +50,6 @@
                         <div class="btn-group" role="group">
                             <a href="JoueurServlet?action=editer&id=${joueur.id}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Éditer</a>
                             <a href="JoueurServlet?action=supprimer&id=${joueur.id}" class="btn btn-danger btn-sm" id="supprimer-${joueur.id}"><i class="fas fa-trash"></i>Supprimer</a>
-
                         </div>
                     </td>
                 </tr>
@@ -85,19 +82,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="Tournois.jsp">Tournois</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Matchs.jsp">Matchs</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="Tournois.jsp">Tournois</a></li>
+                <li class="nav-item"><a class="nav-link" href="Matchs.jsp">Matchs</a></li>
                 <li class="nav-item">
                     <a class="nav-link" href="Epreuves.jsp">Epreuves</a>
                 </li><br><br><br><br><br><br>
