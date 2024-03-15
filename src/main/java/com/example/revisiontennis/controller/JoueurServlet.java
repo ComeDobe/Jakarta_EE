@@ -84,7 +84,8 @@ public class JoueurServlet extends HttpServlet {
         joueur.setId(id);
         JoueurDAO joueurDAO = new JoueurDAO();
         joueurDAO.editerJoueur(joueur);
-        response.sendRedirect("joueur.jsp");
+        response.sendRedirect("editerJoueur.jsp");
+
     }
 
 }
