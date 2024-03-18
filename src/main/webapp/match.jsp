@@ -69,8 +69,8 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item"><a class="nav-link" href="joueur.jsp">Joueurs</a></li>
-        <li class="nav-item"><a class="nav-link" href="Tournois.jsp">Tournois</a></li>
-        <li class="nav-item"><a class="nav-link" href="Epreuves.jsp">Epreuves</a></li><br><br><br><br><br><br>
+        <li class="nav-item"><a class="nav-link" href="tournoi.jsp">Tournois</a></li>
+        <li class="nav-item"><a class="nav-link" href="epreuve.jsp">Epreuves</a></li><br><br><br><br><br><br>
         <li>  <a href="LogoutServlet" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
       </ul>
     </div>
