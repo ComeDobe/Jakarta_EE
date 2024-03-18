@@ -55,10 +55,19 @@ public class JoueurServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        JoueurDAO joueurDAO = new JoueurDAO();
-        joueurDAO.supprimerJoueur(id);
-        response.sendRedirect("joueur.jsp");
+        String idStr = request.getParameter("id");
+        if (idStr != null && !idStr.isEmpty()) {
+            try {
+                Integer id = Integer.parseInt(idStr);
+                JoueurDAO joueurDAO = new JoueurDAO();
+                joueurDAO.supprimerJoueur(id);
+                response.sendRedirect("joueur.jsp");
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'identifiant du joueur est invalide");
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'identifiant du joueur est requis");
+        }
     }
 
     @Override
@@ -77,15 +86,24 @@ public class JoueurServlet extends HttpServlet {
     }
 
     protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
-        String sexe = request.getParameter("sexe");
-        Joueur joueur = new Joueur(nom, prenom, sexe);
-        joueur.setId(id);
-        JoueurDAO joueurDAO = new JoueurDAO();
-        joueurDAO.editerJoueur(joueur);
-        response.sendRedirect("editerJoueur.jsp");
+       String idStr = request.getParameter("id");
+         if (idStr != null && !idStr.isEmpty()) {
+              try {
+                Integer id = Integer.parseInt(idStr);
+                String nom = request.getParameter("nom");
+                String prenom = request.getParameter("prenom");
+                String sexe = request.getParameter("sexe");
+                Joueur joueur = new Joueur(nom, prenom, sexe);
+                joueur.setId(id);
+                JoueurDAO joueurDAO = new JoueurDAO();
+                joueurDAO.editerJoueur(joueur);
+                response.sendRedirect("joueur.jsp");
+              } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'identifiant du joueur est invalide");
+              }
+         } else {
+              response.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'identifiant du joueur est requis");
+         }
 
     }
 
