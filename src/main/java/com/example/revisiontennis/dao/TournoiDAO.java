@@ -82,7 +82,6 @@ public class TournoiDAO {
         return tournois;
     }
 
-
     public List<Tournoi> getTournoi() {
         List<Tournoi> tournois = new ArrayList<>();
         try {
