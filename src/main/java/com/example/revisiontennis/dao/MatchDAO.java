@@ -89,7 +89,7 @@ public class MatchDAO {
                 }
             }
         }
-        return  new Match(0, 0, 0);
+         return null;
 }
 
     public List<Match> listerMatchs() {
@@ -110,7 +110,29 @@ public class MatchDAO {
         return matches;
     }
 
-    public List<Match> rechercherMatchs() {
-        return rechercherMatches("");
+    public List<Match> rechercherMatchs(String recherche) {
+        List<Match> matches = new ArrayList<>();
+        String sql = "SELECT * FROM match_tennis WHERE id_vainqueur IN (SELECT id FROM joueur WHERE nom LIKE ? OR prenom LIKE ?) OR id_finaliste IN (SELECT id FROM joueur WHERE nom LIKE ? OR prenom LIKE ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            String rechercheSql = "%" + recherche + "%";
+            statement.setString(1, rechercheSql);
+            statement.setString(2, rechercheSql);
+            statement.setString(3, rechercheSql);
+            statement.setString(4, rechercheSql);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    matches.add(new Match(
+                            resultSet.getInt("id"),
+                            resultSet.getInt("id_vainqueur"),
+                            resultSet.getInt("id_finaliste")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return matches;
     }
+
 }

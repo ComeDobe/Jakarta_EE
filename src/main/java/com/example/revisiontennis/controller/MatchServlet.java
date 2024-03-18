@@ -69,7 +69,7 @@ public class MatchServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("rechercher".equals(action)) {
-            req.setAttribute("matches", matchDAO.rechercherMatchs());
+            req.setAttribute("matches", matchDAO.rechercherMatchs(action));
             req.getRequestDispatcher("match.jsp").forward(req, resp);
         } else {
             try {

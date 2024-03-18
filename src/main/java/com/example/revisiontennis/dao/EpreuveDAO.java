@@ -2,10 +2,7 @@ package com.example.revisiontennis.dao;
 
 import com.example.revisiontennis.model.Epreuve;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,27 +53,46 @@ public class EpreuveDAO {
         }
     }
 
-    public static List <Epreuve> getEpreuve() {
+    public static List<Epreuve> getEpreuve() {
+        List<Epreuve> epreuves = new ArrayList<>();
         try {
             String sql = "SELECT * FROM epreuve";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Epreuve epreuve = new Epreuve(rs.getInt( "id"), rs.getInt("id_tournoi"), rs.getString("type_epreuve"));
+                epreuve.setId(rs.getInt("id"));
+                epreuve.setType_epreuve(rs.getString("type_epreuve"));
+                epreuve.setAnnee(rs.getInt("annee"));
+                epreuves.add(epreuve);
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la récupération des épreuves", e);
         }
-        return null;
+        return epreuves;
     }
+
 
     public static List<Epreuve> rechercherEpreuves(String query, String type_epreuve) {
         List<Epreuve> epreuves = new ArrayList<>();
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM epreuve WHERE type_epreuve LIKE ? OR annee LIKE ?");
-            ps.setString(1, "%" + query + "%");
+            String sql = "SELECT * FROM epreuve WHERE type_epreuve LIKE ? OR annee LIKE ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "%" + type_epreuve + "%");
             ps.setString(2, "%" + query + "%");
-            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Epreuve epreuve = new Epreuve( rs.getInt("id"), rs.getInt("id_tournoi"), rs.getString("type_epreuve"));
+                epreuves.add(epreuve);
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la recherche des épreuves", e);
         }
         return epreuves;
     }
+
 }

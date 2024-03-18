@@ -3,6 +3,8 @@ package com.example.revisiontennis.dao;
 import com.example.revisiontennis.model.Joueur;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JoueurDAO {
 private Joueur joueur;
@@ -56,25 +58,36 @@ private Connection connection;
             }
     }
 
-    public Object rechercherJoueurs(String query, String sexe) {
-            try {
-                PreparedStatement ps;
-                if (sexe.isEmpty()) {
-                    ps = connection.prepareStatement("SELECT * FROM joueur WHERE nom LIKE ? OR prenom LIKE ?");
-                    ps.setString(1, "%" + query + "%");
-                    ps.setString(2, "%" + query + "%");
-                } else {
-                    ps = connection.prepareStatement("SELECT * FROM joueur WHERE (nom LIKE ? OR prenom LIKE ?) AND sexe = ?");
-                    ps.setString(1, "%" + query + "%");
-                    ps.setString(2, "%" + query + "%");
-                    ps.setString(3, sexe);
-                }
-                ResultSet rs = ps.executeQuery();
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public List<Joueur> rechercherJoueurs(String query, String sexe) {
+        List<Joueur> joueurs = new ArrayList<>();
+        try {
+            PreparedStatement ps;
+            if (sexe.isEmpty()) {
+                ps = connection.prepareStatement("SELECT * FROM joueur WHERE nom LIKE ? OR prenom LIKE ?");
+                ps.setString(1, "%" + query + "%");
+                ps.setString(2, "%" + query + "%");
+            } else {
+                ps = connection.prepareStatement("SELECT * FROM joueur WHERE (nom LIKE ? OR prenom LIKE ?) AND sexe = ?");
+                ps.setString(1, "%" + query + "%");
+                ps.setString(2, "%" + query + "%");
+                ps.setString(3, sexe);
             }
-            return joueur;
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Joueur joueur = new Joueur( rs.getString("nom"), rs.getString("prenom"), rs.getString("sexe"));
+                joueur.setId(rs.getInt("id"));
+                joueur.setNom(rs.getString("nom"));
+                joueur.setPrenom(rs.getString("prenom"));
+                joueur.setSexe(rs.getString("sexe"));
+                joueurs.add(joueur);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return joueurs;
     }
+
 
     public Object getJoueur() {
         try {

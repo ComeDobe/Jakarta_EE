@@ -82,13 +82,22 @@ public class EpreuveServlet extends HttpServlet {
         resp.sendRedirect("epreuve.jsp");
     }
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = Integer.parseInt(req.getParameter("id"));
-        Integer id_tournoi = Integer.parseInt(req.getParameter("id_tournoi"));
-        String type = req.getParameter("type");
-        Epreuve epreuve = new Epreuve(id, id_tournoi, type);
-        EpreuveDAO epreuveDAO = new EpreuveDAO();
-        epreuveDAO.editerEpreuve(epreuve);
-        resp.sendRedirect("epreuve.jsp");
+        String idStr = req.getParameter("id");
+        if (idStr != null && !idStr.isEmpty()) {
+            try {
+                Integer id = Integer.parseInt(idStr);
+                Integer id_tournoi = Integer.parseInt(req.getParameter("id_tournoi"));
+                String type = req.getParameter("type");
+                Epreuve epreuve = new Epreuve(id, id_tournoi, type);
+                EpreuveDAO epreuveDAO = new EpreuveDAO();
+                epreuveDAO.editerEpreuve(epreuve);
+                resp.sendRedirect("epreuve.jsp");
+            } catch (NumberFormatException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Identifiant de l'épreuve invalide");
+            }
+        } else {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Identifiant de l'épreuve manquant");
+        }
     }
 
 }

@@ -18,6 +18,7 @@ public class JoueurServlet extends HttpServlet {
         String query = request.getParameter("query");
         String sexe = request.getParameter("sexe");
         JoueurDAO joueurDAO = new JoueurDAO();
+
         if (action == null || action.isEmpty() || "liste".equals(action)) {
             request.setAttribute("joueurs", joueurDAO.getJoueur());
             request.getRequestDispatcher("joueur.jsp").forward(request, response);
