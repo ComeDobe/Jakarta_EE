@@ -11,9 +11,10 @@ public class UsersDAO {
     private static Connection connection;
     public UsersDAO() {
         try {
-            this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tennis?useSSL=false&serverTimezone=UTC", "root", "");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tennis?useSSL=false&serverTimezone=UTC", "root", "");
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Erreur lors de l'établissement de la connexion à la base de données", e);
         }
     }
     public static List<Users> getUsers() {

@@ -13,68 +13,109 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "MatchServlet", value = "/MatchServlet")
+@WebServlet( "/match")
 public class MatchServlet extends HttpServlet {
     private MatchDAO matchDAO;
     private JoueurDAO joueurDAO;
 
+    @Override
+    public void init() {
+        this.matchDAO = new MatchDAO();
+        this.joueurDAO = new JoueurDAO();
+    }
+
+    private Integer safelyParseInteger(String input) {
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        MatchDAO matchDAO = new MatchDAO();
 
-        if ("ajouter".equals(action)) {
-            Integer id = Integer.parseInt(req.getParameter("id"));
-            Integer id_vainqueur = Integer.parseInt(req.getParameter("id_vainqueur"));
-            Integer id_finaliste = Integer.parseInt(req.getParameter("id_finaliste"));
+        if ("ajouter".equals(action) || "editer".equals(action)) {
+            Integer id = safelyParseInteger(req.getParameter("id"));
+            Integer id_vainqueur = safelyParseInteger(req.getParameter("id_vainqueur"));
+            Integer id_finaliste = safelyParseInteger(req.getParameter("id_finaliste"));
+
+            if (id == null || id_vainqueur == null || id_finaliste == null) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètres invalides");
+                return;
+            }
+
             Match match = new Match(id, id_vainqueur, id_finaliste);
-            matchDAO.ajouterMatch(match);
-        } else if ("editer".equals(action)) {
-            Integer id = Integer.parseInt(req.getParameter("id"));
-            Integer id_vainqueur = Integer.parseInt(req.getParameter("id_vainqueur"));
-            Integer id_finaliste = Integer.parseInt(req.getParameter("id_finaliste"));
-            Match match = new Match(id, id_vainqueur, id_finaliste);
-            matchDAO.editerMatch(match);
+            if ("ajouter".equals(action)) {
+                matchDAO.ajouterMatch(match);
+            } else {
+                matchDAO.editerMatch(match);
+            }
         } else if ("supprimer".equals(action)) {
-            Integer id = Integer.parseInt(req.getParameter("id"));
+            Integer id = safelyParseInteger(req.getParameter("id"));
+            if (id == null) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Identifiant du match invalide");
+                return;
+            }
             matchDAO.supprimerMatch(id);
         }
         resp.sendRedirect("match.jsp");
     }
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String query = req.getParameter("query");
         matchDAO = new MatchDAO();
-        String action = null;
-        if (action == null || action.isEmpty() || "liste".equals(action)) {
-            try {
-                req.setAttribute("matches", matchDAO.getMatch());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            req.getRequestDispatcher("match.jsp").forward(req, resp);
-        } else if ("rechercher".equals(action)) {
-            action = req.getParameter("action");
+        String action = req.getParameter("action");
 
+        if ("rechercher".equals(action)) {
             req.setAttribute("matches", matchDAO.rechercherMatchs());
             req.getRequestDispatcher("match.jsp").forward(req, resp);
+        } else {
+            try {
+                req.setAttribute("matches", matchDAO.getMatch());
+                req.getRequestDispatcher("match.jsp").forward(req, resp);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de l'accès à la base de données.");
+            }
         }
     }
+
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        matchDAO.supprimerMatch(id);
-        response.sendRedirect("match.jsp");
-    }
+  protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+     String idStr = request.getParameter("id");
+     if (idStr != null && !idStr.isEmpty()) {
+         try {
+             Integer id = Integer.parseInt(idStr);
+             matchDAO.supprimerMatch(id);
+             response.sendRedirect("match.jsp");
+         } catch (NumberFormatException e) {
+             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'identifiant du match est invalide");
+         }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'identifiant du match est requis");
+
+     }
+  }
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        Integer id_vainqueur = Integer.parseInt(request.getParameter("id_vainqueur"));
-        Integer id_finaliste = Integer.parseInt(request.getParameter("id_finaliste"));
-        Match match = new Match(id, id_vainqueur, id_finaliste);
-        matchDAO.ajouterMatch(match);
-        response.sendRedirect("match.jsp");
+        String idStr = request.getParameter("id");
+        if (idStr != null && !idStr.isEmpty()) {
+            try {
+                Integer id = Integer.parseInt(idStr);
+                Integer id_vainqueur = Integer.parseInt(request.getParameter("id_vainqueur"));
+                Integer id_finaliste = Integer.parseInt(request.getParameter("id_finaliste"));
+                Match match = new Match(id, id_vainqueur, id_finaliste);
+                matchDAO.ajouterMatch(match);
+                response.sendRedirect("match.jsp");
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'identifiant du match est invalide");
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "L'identifiant du match est requis");
+        }
+
     }
 
     protected void afficherListeMatchs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {

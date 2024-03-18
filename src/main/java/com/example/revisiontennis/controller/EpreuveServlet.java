@@ -8,7 +8,7 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "EpreuveServlet", value = "/EpreuveServlet")
+@WebServlet("/epreuve")
 public class EpreuveServlet extends HttpServlet {
 
 
@@ -38,26 +38,39 @@ public class EpreuveServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String action = req.getParameter("action");
         String annee = req.getParameter("annee");
         String type_epreuve = req.getParameter("type_epreuve");
+        EpreuveDAO epreuveDAO = new EpreuveDAO();
+
         if (action == null || action.isEmpty() || "liste".equals(action)) {
-            req.setAttribute("epreuves", EpreuveDAO.getEpreuve());
+            req.setAttribute("epreuves", epreuveDAO.getEpreuve());
             req.getRequestDispatcher("epreuve.jsp").forward(req, resp);
         } else if ("rechercher".equals(action)) {
-            req.setAttribute("epreuves", EpreuveDAO.rechercherEpreuves(annee, type_epreuve));
+            req.setAttribute("epreuves", epreuveDAO.rechercherEpreuves(annee, type_epreuve));
             req.getRequestDispatcher("epreuve.jsp").forward(req, resp);
         }
-
     }
+
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = Integer.parseInt(req.getParameter("id"));
-        EpreuveDAO epreuveDAO = new EpreuveDAO();
-        epreuveDAO.supprimerEpreuve(id);
-        resp.sendRedirect("epreuve.jsp");
-    }
+       String idStr = req.getParameter("id");
+
+        if (idStr != null && !idStr.isEmpty()) {
+            try {
+                Integer id = Integer.parseInt(idStr);
+                EpreuveDAO epreuveDAO = new EpreuveDAO();
+                epreuveDAO.supprimerEpreuve(id);
+                resp.sendRedirect("epreuve.jsp");
+            } catch (NumberFormatException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Identifiant de l'épreuve invalide");
+            }
+        } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Identifiant de l'épreuve manquant");
+            }
+
+        }
+
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer id = Integer.parseInt(req.getParameter("id"));
