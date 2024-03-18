@@ -8,15 +8,15 @@ public class JoueurDAO {
 private Joueur joueur;
 private Connection connection;
 
-public JoueurDAO() {
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tennis?useSSL=false&serverTimezone=UTC", "root", "");
-    } catch (SQLException | ClassNotFoundException e) {
-        e.printStackTrace();
+    public JoueurDAO() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tennis?useSSL=false&serverTimezone=UTC", "root", "");
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException("Erreur lors de l'établissement de la connexion à la base de données", e);
+        }
     }
-}
+
     public void ajouterJoueur(Joueur joueur) throws SQLException {
 
         try {
