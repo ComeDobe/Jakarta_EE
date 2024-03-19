@@ -134,7 +134,6 @@ public class MatchServlet extends HttpServlet {
                 joueurs.put(id_finaliste, joueurDAO.getJoueurById(id_finaliste));
             }
         }
-
         request.setAttribute("matchs", matchs);
         request.setAttribute("joueurs", joueurs);
         request.getRequestDispatcher("match.jsp").forward(request, response);

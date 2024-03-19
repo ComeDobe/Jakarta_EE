@@ -57,14 +57,23 @@ public class UsersServlet extends HttpServlet {
         response.sendRedirect("users.jsp");
     }
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer id = Integer.parseInt(request.getParameter("id"));
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String email = request.getParameter("email");
-        String profil = request.getParameter("profil");
-        UsersDAO usersDAO = new UsersDAO();
-        usersDAO.editerUsers(id, username, password, email, profil);
-        response.sendRedirect("users.jsp");
+        String idStr = request.getParameter("id");
+
+        if (idStr != null && !idStr.isEmpty()) {
+            Integer id = Integer.parseInt(idStr);
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+            String email = request.getParameter("email");
+            String profil = request.getParameter("profil");
+            UsersDAO usersDAO = new UsersDAO();
+            usersDAO.editerUsers(id, username, hashedPassword, email, profil);
+        }
+        try {
+            response.sendRedirect("users.jsp");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
