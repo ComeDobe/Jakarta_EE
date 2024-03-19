@@ -24,7 +24,27 @@ public void init() throws ServletException {
         String code = request.getParameter("code");
         Tournoi tournoi = new Tournoi(nom, code);
         tournoiDAO.ajouterTournoi(tournoi);
+
+        try {
+           tournoiDAO.ajouterTournoi(tournoi);
+        } catch (Exception e) {
+
+        }
+        if (nom == null || nom.isEmpty() || code == null || code.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètres invalides");
+            return;
+        }
+        else if ("editer".equals(request.getParameter("action"))) {
+            tournoiDAO.editerTournoi(tournoi);
+        } else if ("supprimer".equals(request.getParameter("action"))) {
+            tournoiDAO.supprimerTournoi(tournoi.getId());
+        }
+        else if ("ajouter".equals(request.getParameter("action"))) {
+            tournoiDAO.ajouterTournoi(tournoi);
+        }
+
         response.sendRedirect("tournoi.jsp");
+
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,9 +60,15 @@ public void init() throws ServletException {
     }
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        tournoiDAO.supprimerTournoi(id);
-        response.sendRedirect("tournoi.jsp");
+      String idStr = request.getParameter("id");
+        if (idStr != null && !idStr.isEmpty()) {
+            try {
+                int id = Integer.parseInt(idStr);
+                tournoiDAO.supprimerTournoi(id);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,7 +76,20 @@ public void init() throws ServletException {
         String code = request.getParameter("code");
         Tournoi tournoi = new Tournoi(nom, code);
         tournoiDAO.ajouterTournoi(tournoi);
+        if (nom == null || nom.isEmpty() || code == null || code.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètres invalides");
+            return;
+        }
+        else if ("editer".equals(request.getParameter("action"))) {
+            tournoiDAO.editerTournoi(tournoi);
+        } else if ("supprimer".equals(request.getParameter("action"))) {
+            tournoiDAO.supprimerTournoi(tournoi.getId());
+        }
+        else if ("ajouter".equals(request.getParameter("action"))) {
+            tournoiDAO.ajouterTournoi(tournoi);
+        }
         response.sendRedirect("tournoi.jsp");
+
     }
 
     protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -58,6 +97,10 @@ public void init() throws ServletException {
         String code = request.getParameter("code");
         Tournoi tournoi = new Tournoi(nom, code);
         tournoiDAO.editerTournoi(tournoi);
+        if (nom == null || nom.isEmpty() || code == null || code.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètres invalides");
+            return;
+        }
         response.sendRedirect("tournoi.jsp");
     }
 
